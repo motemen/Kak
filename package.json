@@ -4,18 +4,20 @@
   "description": "",
   "main": "app/main.js",
   "scripts": {
-    "start": "npm run dev:watch & npm run app",
+    "start": "npm run dev:watch & tsc && npm run app",
     "postinstall": "npm run dev:deps:dts & npm run dev:deps:bower",
     "app": "electron .",
     "dev:watch": "tsc --watch",
     "dev:deps:dts": "dtsm --insight false install",
-    "dev:deps:bower": "bower install"
+    "dev:deps:bower": "bower install",
+    "dev:clean": "git clean -f -x app/"
   },
   "keywords": [],
   "author": "motemen <https://github.com/motemen>",
   "devDependencies": {
     "bower": "^1.5.3",
     "dtsm": "^0.11.0",
+    "electron-prebuilt": "^0.33.7",
     "typescript": "^1.6.2"
   }
 }

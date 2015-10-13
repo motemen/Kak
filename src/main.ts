@@ -10,7 +10,7 @@ import * as fs from 'fs';
 let editorWindow: GitHubElectron.BrowserWindow;
 
 app.on('ready', () => {
-  editorWindow = new BrowserWindow({ 'use-content-size': true });
+  editorWindow = new BrowserWindow({});
   editorWindow.setTitle('Kak');
   editorWindow.loadUrl('file://' + __dirname + '/../view/editor.html');
   editorWindow.on('closed', () => { editorWindow = null });
@@ -21,16 +21,39 @@ ipc.on('openFile', (ev: any) => {
   dialog.showOpenDialog(
     {
       filters: [
-        { name: 'Text files', extensions: ['txt', 'md', 'adoc'] }
+        { name: 'Text files', extensions: ['txt', 'md', 'adoc'] },
+        { name: 'All files', extensions: ['*'] }
       ]
     }, (fileNames: string[]) => {
       if (fileNames === undefined) {
         ev.sender.send('openFile:cancelled');
       } else {
         fs.readFile(fileNames[0], (err: NodeJS.ErrnoException, data: Buffer) => {
+          if (err) {
+            ev.sender.send('error', err);
+            return;
+          }
           ev.sender.send('openFile:fileChosen', { path: fileNames[0], content: data.toString() });
         });
       }
     }
   );
+});
+
+ipc.on('saveFile', (ev: any, file: IKakFile) => {
+  if (file.path) {
+    fs.writeFile(file.path, file.content, (err: NodeJS.ErrnoException) => {
+      if (err) {
+        ev.sender.send('error', err);
+        return;
+      }
+      ev.sender.send('saveFile:done', file.path);
+    });
+  } else {
+    throw 'TODO';
+  }
+});
+
+ipc.on('reset', (ev: any, file?: IKakFile) => {
+  editorWindow.setTitle(file && file.path ? `${file.path} - Kak` : 'Kak');
 });

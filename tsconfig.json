@@ -2,8 +2,9 @@
     "compilerOptions": {
         "module": "commonjs",
         "outDir": "app",
-        "target": "ES5"
-        ,"noImplicitAny": true
+        "target": "ES5",
+        "noImplicitAny": true,
+        "sourceMap": true
     },
     "files": [
         "src/main.ts",

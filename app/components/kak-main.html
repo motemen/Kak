@@ -9,6 +9,8 @@
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 
+<link rel="import" href="../../bower_components/paper-toast/paper-toast.html">
+
 <link rel="import" href="kak-editor.html">
 <dom-module id="kak-main">
   <style is="custom-style">
@@ -54,7 +56,7 @@ kak-editor {
 }
   </style>
   <template>
-    <iron-localstorage name="draft" value="{{draft}}" on-iron-localstorage-load-empty="initializeDraft"></iron-localstorage>
+    <iron-localstorage name="draft" value="{{draft}}" on-iron-localstorage-load-empty="initializeEmptyDraft"></iron-localstorage>
 
     <paper-header-panel id="headerPanel" class="flex" mode="seamed">
       <paper-toolbar id="toolbar">
@@ -68,6 +70,8 @@ kak-editor {
         </paper-material>
       </div>
     </paper-header-panel>
+
+    <paper-toast id="toastError" text="[[latestError]]"></paper-toast>
   </template>
 </dom-module>
 <script src="kak-main.js"></script>
