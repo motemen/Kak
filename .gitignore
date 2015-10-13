@@ -1,0 +1,5 @@
+/src/typings/
+/app/components/*.js
+/app/*.js
+/bower_components/
+/node_modules/

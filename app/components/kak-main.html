@@ -1,0 +1,73 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+
+<link rel="import" href="../../bower_components/iron-localstorage/iron-localstorage.html">
+
+<link rel="import" href="../../bower_components/paper-toolbar/paper-toolbar.html">
+<link rel="import" href="../../bower_components/paper-header-panel/paper-header-panel.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+
+<link rel="import" href="kak-editor.html">
+<dom-module id="kak-main">
+  <style is="custom-style">
+    :host {
+      --paper-toolbar-background: transparent;
+      --paper-toolbar-color: #666;
+    }
+  </style>
+  <style>
+:host {
+  font-family: "Noto", "Roboto", sans-serif;
+  background-color: #F3F3F3;
+}
+
+kak-editor {
+  font-family: "YuGothic";
+}
+
+#container {
+  position: relative;
+}
+
+#main {
+  position: fixed;
+  top: 88px;
+  bottom: 88px;
+  left: 25%;
+  right: 25%;
+}
+
+#toolbar {
+  transition: opacity 0.6s;
+  opacity: 0.2;
+}
+
+#toolbar:hover {
+  opacity: 1;
+}
+
+#toolbar paper-icon-button:hover,
+#toolbar paper-icon-button[focused] {
+  color: #333;
+}
+  </style>
+  <template>
+    <iron-localstorage name="draft" value="{{draft}}" on-iron-localstorage-load-empty="initializeDraft"></iron-localstorage>
+
+    <paper-header-panel id="headerPanel" class="flex" mode="seamed">
+      <paper-toolbar id="toolbar">
+        <paper-icon-button icon="add"    on-tap="commandNew"></paper-icon-button>
+        <paper-icon-button icon="folder" on-tap="commandOpen"></paper-icon-button>
+        <paper-icon-button icon="save"   on-tap="commandSave" disabled$="[[!isDirty]]"></paper-icon-button>
+      </paper-toolbar>
+      <div id="container" class="content fit layout horizontal">
+        <paper-material id="main" main>
+          <kak-editor id="editor"></kak-editor>
+        </paper-material>
+      </div>
+    </paper-header-panel>
+  </template>
+</dom-module>
+<script src="kak-main.js"></script>

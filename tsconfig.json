@@ -1,0 +1,16 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "outDir": "app",
+        "target": "ES5"
+        ,"noImplicitAny": true
+    },
+    "files": [
+        "src/main.ts",
+        "src/editor.ts",
+        "src/components/kak-main.ts",
+        "src/components/kak-editor.ts",
+        "src/typings/bundle.d.ts",
+        "src/app.d.ts"
+    ]
+}

@@ -1,0 +1,27 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../bower_components/paper-styles/shadow.html">
+<dom-module id="kak-editor">
+  <style>
+#contentEditor {
+  @apply(--layout-fit);
+
+  background-color: #FFF;
+
+  padding: 2em;
+  line-height: 1.7;
+
+  overflow-y: scroll;
+
+  white-space: pre-wrap;
+}
+
+#contentEditor:focus {
+  outline: none;
+}
+  </style>
+  <template>
+    <div id="contentEditor" contenteditable="true"></div>
+  </template>
+</dom-module>
+<script src="kak-editor.js"></script>
