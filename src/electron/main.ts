@@ -12,7 +12,7 @@ let editorWindow: GitHubElectron.BrowserWindow;
 app.on('ready', () => {
   editorWindow = new BrowserWindow({});
   editorWindow.setTitle('Kak');
-  editorWindow.loadUrl('file://' + __dirname + '/../view/editor.html');
+  editorWindow.loadUrl('file://' + __dirname + '/view/editor.html');
   editorWindow.on('closed', () => { editorWindow = null });
   editorWindow.openDevTools({ detach: true });
 });

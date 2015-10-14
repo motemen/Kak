@@ -2,7 +2,7 @@
   "name": "Kak",
   "version": "0.0.0",
   "description": "",
-  "main": "app/main.js",
+  "main": "app/electron/main.js",
   "scripts": {
     "start":       "npm-run-all build -p watch app",
     "postinstall": "npm-run-all -p deps:*",
