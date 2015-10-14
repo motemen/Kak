@@ -28,7 +28,7 @@
 }
 
 kak-editor {
-  font: var(--kak-paper-font, "YuGothic");
+  font: var(--kak-paper-font, medium 'YuGothic');
 }
 
 #container {
@@ -76,7 +76,7 @@ kak-editor {
       <paper-toolbar id="toolbar">
         <paper-icon-button icon="add"    on-tap="commandNew"></paper-icon-button>
         <paper-icon-button icon="folder" on-tap="commandOpen"></paper-icon-button>
-        <paper-icon-button icon="save"   on-tap="commandSave" disabled$="[[!isDirty]]"></paper-icon-button>
+        <paper-icon-button icon="save"   on-tap="commandSave" disabled$="[[!draft.isDirty]]"></paper-icon-button>
         <span class="title"></span>
         <paper-icon-button icon="visibility" on-tap="commandToggleTheme"></paper-icon-button>
         <!--paper-icon-button icon="fullscreen"></paper-icon-button-->

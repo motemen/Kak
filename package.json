@@ -4,13 +4,17 @@
   "description": "",
   "main": "app/main.js",
   "scripts": {
-    "start": "npm run dev:watch & tsc && npm run app",
-    "postinstall": "npm run dev:deps:dts & npm run dev:deps:bower",
-    "app": "electron .",
-    "dev:watch": "tsc --watch",
-    "dev:deps:dts": "dtsm --insight false install",
-    "dev:deps:bower": "bower install",
-    "dev:clean": "git clean -f -x app/"
+    "start":       "npm-run-all build -p watch app",
+    "postinstall": "npm-run-all -p deps:*",
+
+    "app":         "electron .",
+    "build":       "tsc",
+    "watch":       "tsc --watch",
+
+    "deps:dts":    "dtsm --insight false install",
+    "deps:bower":  "bower --config.interactive=false install",
+
+    "clean":       "git clean -f -x app/"
   },
   "keywords": [],
   "author": "motemen <https://github.com/motemen>",
@@ -18,6 +22,8 @@
     "bower": "^1.5.3",
     "dtsm": "^0.11.0",
     "electron-prebuilt": "^0.33.7",
+    "npm-run-all": "^1.2.11",
     "typescript": "^1.6.2"
-  }
+  },
+  "private": true
 }

@@ -24,6 +24,6 @@ ipc.on('error', (msg: string) => {
 });
 
 ipc.on('saveFile:done', (path: string) => {
-  kakMain.reset();
+  kakMain.reset({ path: path });
   kakMain.notify('File saved: ' + path);
 });

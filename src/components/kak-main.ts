@@ -17,22 +17,28 @@ Polymer({
   initializeEmptyDraft () {
     this.draft = {
       content: '',
-      path: null
+      path:    null,
+      isDirty: false
     };
   },
 
   attached () {
+    // for cases undefined is set...
+    if (!this.draft) {
+      this.initializeEmptyDraft();
+    }
+
     this.reset(this.draft);
     this.$.editor.addEventListener('input', () => {
       this.set('draft.content', this.$.editor.text);
-      this.isDirty = true;
+      this.set('draft.isDirty', true);
     });
 
     this.$.editor.focus();
   },
 
   commandNew() {
-    this.reset({ path: null, content: '' });
+    this.reset({ path: null, content: '', isDirty: false });
   },
 
   commandOpen () {
@@ -68,12 +74,11 @@ Polymer({
   },
 
   commandSave () {
-    if (!this.isDirty) {
+    if (!this.draft.isDirty) {
       return;
     }
 
-    let file: IKakFile = { path: this.draft.path, content: this.$.editor.text };
-    this.fire('kak:command:saveFile', file);
+    this.fire('kak:command:saveFile', this.draft);
   },
 
   openFile (file: IKakFile) {
@@ -85,13 +90,12 @@ Polymer({
     this.$.toastError.show();
   },
 
-  reset (file?: { path?: string; content: string }) {
-    this.set('isDirty', false);
+  reset (file?: { path?: string; content?: string }) {
+    this.set('draft.isDirty', false);
 
     if (file) {
       if (file.content !== undefined) {
-        this.set('draft.content', file.content);
-        this.$.editor.text = file.content;
+        this.set('draft.content', this.$.editor.text = file.content);
       }
       if (file.path !== undefined) {
         this.set('draft.path', file.path);
