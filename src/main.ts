@@ -51,7 +51,19 @@ ipc.on('saveFile', (ev: any, file: IKakFile) => {
       ev.sender.send('saveFile:done', file.path);
     });
   } else {
-    throw 'TODO';
+    dialog.showSaveDialog(editorWindow, (fileName: string) => {
+      if (fileName === undefined) {
+        ev.sender.send('saveFile:cancelled');
+      } else {
+        fs.writeFile(fileName, file.content, (err: NodeJS.ErrnoException) => {
+          if (err) {
+            ev.sender.send('error', err);
+            return;
+          }
+          ev.sender.send('saveFile:done', fileName);
+        });
+      }
+    });
   }
 });
 
