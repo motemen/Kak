@@ -41,6 +41,7 @@ ipc.on('openFile', (ev: any) => {
 });
 
 ipc.on('saveFile', (ev: any, file: IKakFile) => {
+  console.log(ev, file)
   if (file.path) {
     fs.writeFile(file.path, file.content, (err: NodeJS.ErrnoException) => {
       if (err) {

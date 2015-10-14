@@ -8,3 +8,9 @@ interface IKakMainElement extends polymer.Base, HTMLElement {
   notify(msg: string): void;
   reset(file?: { path?: string; content: string }): void;
 }
+
+declare module polymer {
+  interface PolymerStatic {
+    updateStyles(): void;
+  }
+}

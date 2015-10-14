@@ -6,10 +6,13 @@
 #contentEditor {
   @apply(--layout-fit);
 
-  background-color: #FFF;
+  color: var(--kak-paper-color, #111111);
+  background: var(--kak-paper-background, #FFFFFF);
+  line-height: var(--kak-paper-line-height, 1.8);
+
+  transition: background-color,color 0.6s;
 
   padding: 2em;
-  line-height: 1.7;
 
   overflow-y: scroll;
 

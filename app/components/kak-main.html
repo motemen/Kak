@@ -16,17 +16,19 @@
   <style is="custom-style">
     :host {
       --paper-toolbar-background: transparent;
-      --paper-toolbar-color: #666;
+      --paper-toolbar-color: var(--kak-ui-color, #666666);
     }
   </style>
   <style>
 :host {
   font-family: "Noto", "Roboto", sans-serif;
-  background-color: #F3F3F3;
+  background: var(--kak-ui-background, #F3F3F3);
+
+  transition: background-color,color 0.6s;
 }
 
 kak-editor {
-  font-family: "YuGothic";
+  font: var(--kak-paper-font, "YuGothic");
 }
 
 #container {
@@ -35,12 +37,14 @@ kak-editor {
 
 #main {
   position: fixed;
-  top: 88px;
+
+  top:    88px;
   bottom: 88px;
-  left: 25%;
-  right: 25%;
+  left:   25%;
+  right:  25%;
 }
 
+/*
 #toolbar {
   transition: opacity 0.6s;
   opacity: 0.2;
@@ -49,10 +53,20 @@ kak-editor {
 #toolbar:hover {
   opacity: 1;
 }
+*/
+
+#toolbar paper-icon-button {
+  transition: opacity 0.6s;
+  opacity: 0.1;
+}
+
+#toolbar:hover paper-icon-button {
+  opacity: 0.5;
+}
 
 #toolbar paper-icon-button:hover,
 #toolbar paper-icon-button[focused] {
-  color: #333;
+  opacity: 1;
 }
   </style>
   <template>
@@ -63,11 +77,14 @@ kak-editor {
         <paper-icon-button icon="add"    on-tap="commandNew"></paper-icon-button>
         <paper-icon-button icon="folder" on-tap="commandOpen"></paper-icon-button>
         <paper-icon-button icon="save"   on-tap="commandSave" disabled$="[[!isDirty]]"></paper-icon-button>
+        <span class="title"></span>
+        <paper-icon-button icon="visibility" on-tap="commandToggleTheme"></paper-icon-button>
+        <!--paper-icon-button icon="fullscreen"></paper-icon-button-->
       </paper-toolbar>
       <div id="container" class="content fit layout horizontal">
-        <paper-material id="main" main>
+        <div id="main" main>
           <kak-editor id="editor"></kak-editor>
-        </paper-material>
+        </div>
       </div>
     </paper-header-panel>
 

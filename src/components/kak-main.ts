@@ -39,6 +39,34 @@ Polymer({
     this.fire('kak:command:openFile');
   },
 
+  THEME_STYLES: [
+    {
+      'paper-background': '#FFFFFF',
+      'paper-font':       'medium YuGothic',
+      'paper-color':      '#111111',
+      'ui-background':    '#F3F3F3',
+      'ui-color':         '#666666'
+    },
+    {
+      'paper-background': 'transparent',
+      'paper-font':       '110% serif',
+      'paper-color':      '#EEEEEE',
+      'ui-background':    '#333333',
+      'ui-color':         '#EEEEEE'
+    }
+  ],
+
+  commandToggleTheme () {
+    this.themeIndex = ((this.themeIndex || 0) + 1) % this.THEME_STYLES.length;
+
+    let theme = this.THEME_STYLES[this.themeIndex];
+    for (let p in theme) {
+      this.customStyle['--kak-' + p] = theme[p];
+    }
+
+    Polymer.updateStyles();
+  },
+
   commandSave () {
     if (!this.isDirty) {
       return;
@@ -62,6 +90,7 @@ Polymer({
 
     if (file) {
       if (file.content !== undefined) {
+        this.set('draft.content', file.content);
         this.$.editor.text = file.content;
       }
       if (file.path !== undefined) {
