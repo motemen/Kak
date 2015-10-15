@@ -9,6 +9,9 @@
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 
+<link rel="import" href="../../bower_components/paper-menu/paper-menu.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item.html">
+
 <link rel="import" href="../../bower_components/paper-toast/paper-toast.html">
 
 <link rel="import" href="kak-editor.html">
@@ -79,7 +82,12 @@ kak-editor {
         <paper-icon-button icon="save"   on-tap="commandSave" disabled$="[[!draft.isDirty]]"></paper-icon-button>
         <span class="title"></span>
         <paper-icon-button icon="visibility" on-tap="commandToggleTheme"></paper-icon-button>
+        <!--paper-icon-button icon="settings"   on-tap="commandSettings"></paper-icon-button-->
         <!--paper-icon-button icon="fullscreen"></paper-icon-button-->
+        <!--paper-menu hidden$="[[!showSettingsMenu]]">
+          <paper-item>Item 1</paper-item>
+          <paper-item>Item 2</paper-item>
+        </paper-menu-->
       </paper-toolbar>
       <div id="container" class="content fit layout horizontal">
         <div id="main" main>

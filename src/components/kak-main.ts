@@ -42,20 +42,37 @@ Polymer({
   },
 
   commandOpen () {
-    this.fire('kak:command:openFile');
+    this.rpc('openFile').then(
+      (file: IKakFile) => { if (file) this.openFile(file) },
+      (err: string) => { this.notify(err) }
+    );
+  },
+
+  commandSave () {
+    if (!this.draft.isDirty) {
+      return;
+    }
+
+    this.rpc('saveFile', this.draft).then(
+      (path: string) => {
+        this.reset({ path: path });
+        this.notify(`File saved: ${path}`);
+      },
+      (err: string) => { this.notify(err) }
+    );
   },
 
   THEME_STYLES: [
     {
       'paper-background': '#FFFFFF',
-      'paper-font':       'medium YuGothic',
+      'paper-font':       'medium YuGothic, sans-serif',
       'paper-color':      '#111111',
       'ui-background':    '#F3F3F3',
       'ui-color':         '#666666'
     },
     {
       'paper-background': 'transparent',
-      'paper-font':       '110% serif',
+      'paper-font':       '110% "Hiragino Mincho ProN", serif',
       'paper-color':      '#EEEEEE',
       'ui-background':    '#333333',
       'ui-color':         '#EEEEEE'
@@ -71,14 +88,6 @@ Polymer({
     }
 
     Polymer.updateStyles();
-  },
-
-  commandSave () {
-    if (!this.draft.isDirty) {
-      return;
-    }
-
-    this.fire('kak:command:saveFile', this.draft);
   },
 
   openFile (file: IKakFile) {
@@ -117,5 +126,26 @@ Polymer({
     if (action) {
       this[action]();
     }
+  },
+
+  _rpcWaiters: {},
+
+  rpc<T> (name: string, arg?: any): Promise<T> {
+    console.log('rpc', name, arg);
+
+    return new Promise((ok, ng) => {
+      this._rpcWaiters[name] = { ok: ok, ng: ng };
+      this.fire(`rpc:${name}`, arg);
+    });
+  },
+
+  registerRPCHandler(name: string, handler: (arg: any, ok: (v: any) => void, ng: (e: any) => void) => void) {
+    this.addEventListener(`rpc:${name}`, (ev: CustomEvent) => {
+      let w = this._rpcWaiters[name] || {};
+      let nop = (x: any) => {};
+      delete this._rpcWaiters[name];
+
+      handler(ev.detail, w.ok || nop, w.ng || nop);
+    });
   }
 });

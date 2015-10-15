@@ -1,29 +1,66 @@
 import * as ipc from 'ipc';
+import * as remote from 'remote';
 
-let kakMain = <IKakMainElement>document.querySelector('#kakMain');
+let fs = remote.require('fs');
+let dialog = remote.require('dialog');
 
-kakMain.addEventListener('kak:command:openFile', () => {
-  (<any>ipc).send('openFile')
-}, true);
+let kakMainElement = <IKakMainElement>document.querySelector('#kakMain');
 
-kakMain.addEventListener('kak:command:saveFile', (ev: any) => {
-  (<any>ipc).send('saveFile', ev.detail);
-}, true);
-
-kakMain.addEventListener('kak:reset', (ev: any) => {
-  (<any>ipc).send('reset', ev.detail);
+kakMainElement.addEventListener('kak:reset', (ev: CustomEvent) => {
+  let file = <IKakFile>ev.detail;
+  remote.getCurrentWindow().setTitle(file && file.path ? `${file.path} - Kak` : 'Kak');
 });
 
-ipc.on('openFile:fileChosen', (arg: IKakFile) => {
-  console.log(arg);
-  kakMain.openFile(arg);
+kakMainElement.registerRPCHandler('openFile', (_: any, ok: (v: any) => void, ng: (e: any) => void) => {
+  dialog.showOpenDialog(
+    {
+      filters: [
+        { name: 'Text files', extensions: ['txt', 'md', 'adoc'] },
+        { name: 'All files', extensions: ['*'] }
+      ]
+    }, (fileNames: string[]) => {
+      if (fileNames === undefined) {
+        ok(null);
+        return;
+      }
+
+      fs.readFile(fileNames[0], (err: NodeJS.ErrnoException, data: Buffer) => {
+        if (err) {
+          ng(err);
+          return;
+        }
+
+        ok({ path: fileNames[0], content: data.toString() });
+      });
+    }
+  );
 });
 
-ipc.on('error', (msg: string) => {
-  kakMain.notify(msg);
-});
+kakMainElement.registerRPCHandler('saveFile', (file: IKakFile, ok: (v: any) => void, ng: (e: any) => void) => {
+  if (file.path) {
+    fs.writeFile(file.path, file.content, (err: NodeJS.ErrnoException) => {
+      if (err) {
+        ng(err);
+        return;
+      }
 
-ipc.on('saveFile:done', (path: string) => {
-  kakMain.reset({ path: path });
-  kakMain.notify('File saved: ' + path);
+      ok(file.path);
+    });
+  } else {
+    dialog.showSaveDialog((fileName: string) => {
+      if (fileName === undefined) {
+        ok(null);
+        return;
+      }
+
+      fs.writeFile(fileName, file.content, (err: NodeJS.ErrnoException) => {
+        if (err) {
+          ng(err);
+          return;
+        }
+
+        ok(fileName);
+      });
+    });
+  }
 });
