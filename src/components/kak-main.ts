@@ -65,14 +65,14 @@ Polymer({
   THEME_STYLES: [
     {
       'paper-background': '#FFFFFF',
-      'paper-font':       'medium YuGothic, sans-serif',
+      'paper-font':       'medium 游ゴシック, YuGothic, sans-serif',
       'paper-color':      '#111111',
       'ui-background':    '#F3F3F3',
       'ui-color':         '#666666'
     },
     {
       'paper-background': 'transparent',
-      'paper-font':       '110% "Hiragino Mincho ProN", serif',
+      'paper-font':       '110% "Hiragino Mincho ProN", 游ゴシック, serif',
       'paper-color':      '#EEEEEE',
       'ui-background':    '#333333',
       'ui-color':         '#EEEEEE'
