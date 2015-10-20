@@ -46,21 +46,22 @@ kakMainElement.registerRPCHandler('saveFile', (file: IKakFile, ok: (v: any) => v
 
       ok(file.path);
     });
-  } else {
-    dialog.showSaveDialog((fileName: string) => {
-      if (fileName === undefined) {
-        ok(null);
+    return;
+  }
+
+  dialog.showSaveDialog((fileName: string) => {
+    if (fileName === undefined) {
+      ok(null);
+      return;
+    }
+
+    fs.writeFile(fileName, file.content, (err: NodeJS.ErrnoException) => {
+      if (err) {
+        ng(err);
         return;
       }
 
-      fs.writeFile(fileName, file.content, (err: NodeJS.ErrnoException) => {
-        if (err) {
-          ng(err);
-          return;
-        }
-
-        ok(fileName);
-      });
+      ok(fileName);
     });
-  }
+  });
 });

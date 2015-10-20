@@ -23,6 +23,9 @@ Polymer({
   },
 
   attached () {
+    this.themeIndex = -1;
+    this.commandToggleTheme();
+
     // for cases undefined is set...
     if (!this.draft) {
       this.initializeEmptyDraft();
